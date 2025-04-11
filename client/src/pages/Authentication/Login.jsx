@@ -3,28 +3,43 @@ import bgImg from "../../assets/images/login.jpg";
 import logo from "../../assets/images/logo.png";
 import { AuthContext } from "../../provider/AuthProvider";
 import { useContext } from "react";
-import { ToastContainer, toast } from "react-toastify";
+// import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { signInWithEmailAndPassword, signInWithPopup } =
-    useContext(AuthContext);
+  const { signIn, signInWithGoogle } = useContext(AuthContext);
 
   // Google SignIn
   const handleGoogleSignIn = async () => {
     try {
-      await signInWithPopup();
+      await signInWithGoogle();
       toast.success("Signin Successfully");
       navigate("/");
-    } catch {
-      err;
-    }
-    {
+    } catch (err) {
+      toast.error(err?.message);
       console.log(err);
     }
   };
 
   // Email Password signin
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const email = form.email.value;
+    const pass = form.password.value;
+    console.log(email, pass);
+
+    try {
+      const result = await signIn(email, pass);
+      console.log(result);
+      navigate("/");
+      toast.success("Signin successfullly");
+    } catch (err) {
+      console.log(err);
+      toast.error(err?.message);
+    }
+  };
 
   return (
     <div className="flex justify-center items-center min-h-[calc(100vh-306px)] my-12">
