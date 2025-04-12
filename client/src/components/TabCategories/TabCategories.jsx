@@ -2,7 +2,17 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import JobCard from "../JobCard/JobCard";
 
-const TabCategories = () => {
+const TabCategories = ({ jobs }) => {
+  const {
+    _id,
+    job_title,
+    category,
+    deadline,
+    description,
+    min_price,
+    max_price,
+    buyer_email,
+  } = jobs;
   return (
     <Tabs>
       <h1 className="text-2xl font-semibold text-center text-gray-300 capitalize lg:text-3xl ">
@@ -23,7 +33,9 @@ const TabCategories = () => {
         </div>
 
         <TabPanel>
-          <JobCard />
+          {jobs.map((job) => (
+            <JobCard job={job} />
+          ))}
         </TabPanel>
 
         <TabPanel>
