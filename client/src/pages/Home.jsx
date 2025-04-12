@@ -1,7 +1,13 @@
-import React from "react";
+import Caurousel from "../components/Caurosel/Caurosel";
+import TabCategories from "../components/TabCategories/TabCategories";
 
 const Home = () => {
-  return <div></div>;
+  return (
+    <>
+      <Caurousel />
+      <TabCategories />
+    </>
+  );
 };
 
 export default Home;
