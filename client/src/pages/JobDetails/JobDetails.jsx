@@ -1,8 +1,11 @@
-import { use, useContext } from "react";
+import DatePicker from "react-datepicker";
+import { useContext, useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import { AuthContext } from "../../provider/AuthProvider";
+import "react-datepicker/dist/react-datepicker.css";
 
 const JobDetails = () => {
+  const [startDate, setStartDate] = useState(new Date());
   const job = useLoaderData();
   const { user } = useContext(AuthContext);
   const {
@@ -13,15 +16,41 @@ const JobDetails = () => {
     max_price,
     category,
     deadline,
+    buyer_email,
   } = job || {};
+
+  const handleFormSubmission = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const jobId = _id;
+    const price = parseFloat(form.price.value);
+    const comment = form.comment.value;
+    const deadline = startDate;
+    const email = form.email.value;
+    // const buyer_email = buyer_email;
+    const status = "Pending";
+
+    const bidData = {
+      jobId,
+      price,
+      deadline,
+      comment,
+      job_title,
+      category,
+      email,
+      buyer_email,
+      status,
+    };
+
+    console.table(bidData);
+  };
+
   return (
     <div className="flex flex-col md:flex-row justify-around gap-5  items-center min-h-[calc(100vh-306px)] md:max-w-screen-xl mx-auto ">
       {/* Job Details */}
       <div className="flex-1  px-4 py-7 bg-white rounded-md shadow-md md:min-h-[350px]">
         <div className="flex items-center justify-between">
-          <span className="text-sm font-light text-gray-800 ">
-            Deadline: {deadline}
-          </span>
+          <span className="text-sm font-light text-gray-800 ">Deadline:</span>
           <span className="px-4 py-1 text-xs text-blue-800 uppercase bg-blue-200 rounded-full ">
             {category}
           </span>
@@ -42,7 +71,7 @@ const JobDetails = () => {
                 Name: {user?.displayName}
               </p>
               <p className="mt-2 text-sm  text-gray-600 ">
-                Email: {user?.email}
+                Email: {buyer_email}
               </p>
             </div>
             <div className="rounded-full object-cover overflow-hidden w-14 h-14">
@@ -54,13 +83,14 @@ const JobDetails = () => {
           </p>
         </div>
       </div>
+
       {/* Place A Bid Form */}
       <section className="p-6 w-full  bg-white rounded-md shadow-md flex-1 md:min-h-[350px]">
         <h2 className="text-lg font-semibold text-gray-700 capitalize ">
           Place A Bid
         </h2>
 
-        <form>
+        <form onSubmit={handleFormSubmission}>
           <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
             <div>
               <label className="text-gray-700 " htmlFor="price">
@@ -100,9 +130,14 @@ const JobDetails = () => {
               />
             </div>
             <div className="flex flex-col gap-2 ">
-              <label className="text-gray-700">Deadline : {deadline} </label>
-
+              <label className="text-gray-700">Deadline : </label>
               {/* Date Picker Input Field */}
+              <DatePicker
+                className="text-black border p-2 rounded-md "
+                selected={startDate}
+                onChange={(date) => setStartDate(date)}
+              />
+              ;
             </div>
           </div>
 
